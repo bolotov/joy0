@@ -9,6 +9,10 @@ from this one.
 Changes
 -------
 
+This is a bit modified fork of a Joy0 that Ruurd Wiersma preserved.
+I am going to change it in a way to allow compiling it with no problems
+using latest compilers and maybe minor ergonomic changes.
+
 Some system header files have been added. Functions declarations have been
 ANSIfied, allowing compilation with all warnings turned on.
 
