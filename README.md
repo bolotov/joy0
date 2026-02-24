@@ -1,17 +1,15 @@
 Joy0
 ----
 
-This is the original version of [Joy](https://github.com/Wodan58/Joy),
-created by Manfred von Thun. It is kept as a reference implementation
-in order to make sure that other implementations don't deviate too much
-from this one.
+This is a bit modified fork of a **Joy0** by **Manfred von Thun**
+that [**Ruurd Wiersma**] had.
+I am going to change it in a way to allow compiling it with no problems
+using latest compilers and maybe minor ergonomic changes.
+No changes beyound just making it work, pretty-printing and bugfixes if
+bugs will be found (and hoepfully **no major changes in 'behaviour'**)
 
 Changes
 -------
-
-This is a bit modified fork of a Joy0 that Ruurd Wiersma preserved.
-I am going to change it in a way to allow compiling it with no problems
-using latest compilers and maybe minor ergonomic changes.
 
 Some system header files have been added. Functions declarations have been
 ANSIfied, allowing compilation with all warnings turned on.
