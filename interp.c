@@ -144,10 +144,15 @@ PUBLIC char *opername(int o);
     opername(NODE->op) ) )
 
 /* PUBLIC int clock(); */        /* file time.h */
-PUBLIC Node * newnode(Operator o, long l, Node *r);    /* file utils.c */
+PUBLIC Node
+*
+newnode(Operator
+o,
+long l, Node
+*r);    /* file utils.c */
 PUBLIC void memoryindex_(void);
 
-PUBLIC void execerror(char *message, char *op);        /* file main.c	*/
+PUBLIC void execerror(char *message, char *op);        /* file main.c */
 PUBLIC void abortexecution_(void);
 
 PUBLIC void getsym(void);                        /* file scan.c */
@@ -161,7 +166,7 @@ PUBLIC void writeterm(Node *n);
 PUBLIC void quit_(void);
 
 PUBLIC void gc_(void);
-/* PUBLIC  int malloc(); */        /* in the library	*/
+/* PUBLIC  int malloc(); */        /* in the library    */
 /* PUBLIC void system(); */
 
 /* - - - -  O P E R A N D S   - - - - */
@@ -312,10 +317,10 @@ PRIVATE void sign_(void) {
 }
 
 #define MULDIVREM(PROCEDURE, NAME, OPER, CHECK)            \
-PRIVATE void PROCEDURE(void)                    \
-{   TWOPARAMS(NAME);                        \
-    INTEGERS2(NAME);                        \
-    CHECK;                            \
+PRIVATE void PROCEDURE(void)                               \
+{   TWOPARAMS(NAME);                                       \
+    INTEGERS2(NAME);                                       \
+    CHECK;                                                 \
     BINARY(INTEGER_,stk->next->u.num OPER stk->u.num); }
 
 MULDIVREM(mul_, "*", *,)
@@ -821,10 +826,10 @@ PRIVATE void null_(void) {
 /*
     switch (stk->op)
       { case STRING_:
-	    UNARY(BOOLEAN_, *(stk->u.str) == '\0');
-	    break;
-	default:
-	    UNARY(BOOLEAN_, ! stk->u.num); }
+        UNARY(BOOLEAN_, *(stk->u.str) == '\0');
+        break;
+    default:
+        UNARY(BOOLEAN_, ! stk->u.num); }
 */
 }
 
@@ -986,8 +991,7 @@ PRIVATE void writestack(Node *n)
 }
 #endif
 
-PUBLIC void exeterm(Node *n)
-{
+PUBLIC void exeterm(Node *n) {
     Node * stepper;
     start:
     if (n == NULL) return;
@@ -1039,7 +1043,7 @@ PUBLIC void exeterm(Node *n)
             printnode(stepper);
         }
 /*
-	stepper = stepper->next; }
+    stepper = stepper->next; }
 */
     }
     POP(conts);
@@ -1157,16 +1161,16 @@ PRIVATE void app1_(void) {
     POP(dump);
 }
 
-PRIVATE void cleave_(void) {            /*  X [P1] [P2] cleave ==>  X1 X2	*/
+PRIVATE void cleave_(void) {            /*  X [P1] [P2] cleave ==>  X1 X2    */
     THREEPARAMS("cleave");
     TWOQUOTES("cleave");
     SAVESTACK;
     stk = SAVED3;
-    exeterm(SAVED2->u.lis);            /* [P1]		*/
-    dump1 = newnode(stk->op, stk->u.num, dump1);    /*  X1		*/
+    exeterm(SAVED2->u.lis);            /* [P1]        */
+    dump1 = newnode(stk->op, stk->u.num, dump1);    /*  X1        */
     stk = SAVED3;
-    exeterm(SAVED1->u.lis);            /* [P2]		*/
-    dump1 = newnode(stk->op, stk->u.num, dump1);    /*  X2		*/
+    exeterm(SAVED1->u.lis);            /* [P2]        */
+    dump1 = newnode(stk->op, stk->u.num, dump1);    /*  X2        */
     stk = dump1;
     dump1 = dump1->next->next;
     stk->next->next = SAVED4;
@@ -1197,7 +1201,7 @@ PRIVATE void app2_(void) {            /*   Y  Z  [P]  app2     ==>  Y'  Z'  */
     POP(dump);
 }
 
-PRIVATE void app3_(void) {            /*  X Y Z [P]  app3    ==>  X' Y' Z'	*/
+PRIVATE void app3_(void) {            /*  X Y Z [P]  app3    ==>  X' Y' Z'    */
     FOURPARAMS("app3");
     ONEQUOTE("app3");
     SAVESTACK;
@@ -1218,7 +1222,7 @@ PRIVATE void app3_(void) {            /*  X Y Z [P]  app3    ==>  X' Y' Z'	*/
     POP(dump);
 }
 
-PRIVATE void app4_(void) {            /*  X Y Z W [P]  app4    ==>  X' Y' Z' W'	*/
+PRIVATE void app4_(void) {            /*  X Y Z W [P]  app4    ==>  X' Y' Z' W'    */
     FIVEPARAMS("app4");
     ONEQUOTE("app4");
     SAVESTACK;
@@ -1384,13 +1388,13 @@ PRIVATE void cond_(void) {
     POP(dump);
 }
 
-#define IF_TYPE(PROCEDURE, NAME, TYP)                \
-    PRIVATE void PROCEDURE(void)                    \
-    {   TWOPARAMS(NAME);                    \
-    TWOQUOTES(NAME);                    \
-    SAVESTACK;                        \
-    stk = SAVED3;                        \
-    exeterm(stk->op == TYP ? SAVED2->u.lis : SAVED1->u.lis);\
+#define IF_TYPE(PROCEDURE, NAME, TYP)                        \
+    PRIVATE void PROCEDURE(void)                             \
+    {   TWOPARAMS(NAME);                                     \
+    TWOQUOTES(NAME);                                         \
+    SAVESTACK;                                               \
+    stk = SAVED3;                                            \
+    exeterm(stk->op == TYP ? SAVED2->u.lis : SAVED1->u.lis); \
     POP(dump); }
 
 IF_TYPE(ifinteger_, "ifinteger", INTEGER_)
@@ -1696,26 +1700,26 @@ PRIVATE void tailrec_(void) {
     POP(dump);
 }
 
-PRIVATE void construct_(void) {            /* [P] [[P1] [P2] ..] -> X1 X2 ..	*/
+PRIVATE void construct_(void) {            /* [P] [[P1] [P2] ..] -> X1 X2 ..    */
     TWOPARAMS("construct");
     TWOQUOTES("construct");
     SAVESTACK;
-    stk = SAVED3;            /* pop progs		*/
-    dump1 = newnode(LIST_, dump2, dump1);    /* save dump2		*/
-    dump2 = stk;            /* save old stack	*/
-    exeterm(SAVED2->u.lis);        /* [P]			*/
-    dump3 = newnode(LIST_, stk, dump3);    /* save current stack	*/
-    dump4 = newnode(LIST_, SAVED1->u.lis, dump4);    /* step [..]	*/
+    stk = SAVED3;                                    /* pop progs   */
+    dump1 = newnode(LIST_, dump2, dump1);            /* save dump2        */
+    dump2 = stk;                                     /* save old stack */
+    exeterm(SAVED2->u.lis);                          /* [P]  */
+    dump3 = newnode(LIST_, stk, dump3);              /* save current stack    */
+    dump4 = newnode(LIST_, SAVED1->u.lis, dump4);    /* step [..]    */
     while (DMP4 != NULL) {
-        stk = DMP3;            /* restore new stack	*/
+        stk = DMP3;            /* restore new stack    */
         exeterm(DMP4->u.lis);
-        dump2 = newnode(stk->op, stk->u.num, dump2); /* result	*/
+        dump2 = newnode(stk->op, stk->u.num, dump2); /* result    */
         DMP4 = DMP4->next;
     }
     POP(dump4);
     POP(dump3);
     stk = dump2;
-    dump2 = dump1->u.lis;    /* restore dump2	*/
+    dump2 = dump1->u.lis;    /* restore dump2    */
     POP(dump1);
     POP(dump);
 }
@@ -1735,7 +1739,7 @@ PRIVATE void while_(void) {
     SAVESTACK;
     do {
         stk = SAVED3;
-        exeterm(SAVED2->u.lis);    /* TEST */
+        exeterm(SAVED2->u.lis);        /* TEST */
         if (!stk->u.num) break;
         stk = SAVED3;
         exeterm(SAVED1->u.lis);        /* DO */
@@ -1854,13 +1858,13 @@ PRIVATE void binrecaux(void) {
     POP(dump1);
     if (result) exeterm(SAVED3->u.lis);
     else {
-        exeterm(SAVED2->u.lis);        /* split */
+        exeterm(SAVED2->u.lis);                      /* split */
         dump2 = newnode(stk->op, stk->u.num, dump2);
         POP(stk);
-        binrecaux();            /* first */
+        binrecaux();                                 /* first */
         NULLARY(dump2->op, dump2->u.num);
         POP(dump2);
-        binrecaux();            /* second */
+        binrecaux();                                  /* second */
         exeterm(SAVED1->u.lis);
     }    /* combine */
 }
@@ -1902,7 +1906,7 @@ PRIVATE void treerecaux(void) {
     if (stk->next->op == LIST_) {
         temp = newnode(ANON_FUNCT_, treerecaux, NULL);
         NULLARY(LIST_, temp);
-        cons_();        /*  D  [[[O] C] ANON_FUNCT_]	*/
+        cons_();        /*  D  [[[O] C] ANON_FUNCT_]    */
         D(printf("treerecaux: stack = "); )
         D(writeterm(stk);
         printf("\n"); )
@@ -1931,19 +1935,19 @@ PRIVATE void genrecaux(void) {
     printf("\n"); )
     SAVESTACK;
     POP(stk);
-    exeterm(SAVED1->u.lis->u.lis);        /*	[I]	*/
+    exeterm(SAVED1->u.lis->u.lis);        /*    [I]    */
     result = stk->u.num;
     stk = SAVED2;
     if (result)
-        exeterm(SAVED1->u.lis->next->u.lis);    /*	[T]	*/
+        exeterm(SAVED1->u.lis->next->u.lis);    /*    [T]    */
     else {
-        exeterm(SAVED1->u.lis->next->next->u.lis); /*	[R1]	*/
+        exeterm(SAVED1->u.lis->next->next->u.lis); /*    [R1]    */
         NULLARY(SAVED1->op, SAVED1->u.lis);
         temp = newnode(ANON_FUNCT_, genrecaux, NULL);
         NULLARY(LIST_, temp);
         cons_();
         exeterm(SAVED1->u.lis->next->next->next);
-    } /*   [R2]	*/
+    } /*   [R2]    */
     POP(dump);
 }
 
@@ -1962,24 +1966,24 @@ PRIVATE void treegenrecaux(void) {
     D(writeterm(stk);
     printf("\n"); )
     if (stk->next->op == LIST_) {
-        SAVESTACK;                /* begin DIP	*/
+        SAVESTACK;                                 /* begin DIP */
         POP(stk);
-        exeterm(SAVED1->u.lis->next->u.lis);    /*	[O2]	*/
+        exeterm(SAVED1->u.lis->next->u.lis);    /* [O2]    */
         NULLARY(SAVED1->op, SAVED1->u.num);
-        POP(dump);                /*   end DIP	*/
+        POP(dump);                                 /* end DIP */
         temp = newnode(ANON_FUNCT_, treegenrecaux, NULL);
         NULLARY(LIST_, temp);
         cons_();
         exeterm(stk->u.lis->u.lis->next->next);
-    } /*	[C]	*/
+    }                                               /* [C] */
     else {
         temp = stk;
         POP(stk);
         exeterm(temp->u.lis->u.lis);
-    }        /*	[O1]	*/
+    }        /*    [O1]    */
 }
 
-PRIVATE void treegenrec_(void) {                    /* T [O1] [O2] [C]	*/
+PRIVATE void treegenrec_(void) {                    /* T [O1] [O2] [C]    */
     FOURPARAMS("treegenrec");
     cons_();
     cons_();
@@ -1997,484 +2001,487 @@ PRIVATE void l_latex_manual_(void) {
     make_manual(1);
 }
 
-/* - - - - -   I N I T I A L I S A T I O N   - - - - - */
+/* MARK: -   I N I T I A L I S A T I O N   - - - - - */
 
+/** * @struct optable_entry
+ * @brief Internal structure for operator table entries.
+ */
 static struct {
-    char *name;
-
-    void (*proc)(void);
-
-    char *messg1, *messg2;
+    char *name;         /**< Name of the operator/primitive */
+    void (*proc)(void); /**< Pointer to the C function implementing it */
+    char *messg1;       /**< Short usage message (e.g., "-> B") */
+    char *messg2;       /**< Longer descriptive message */
 }
-        optable[] =
+
+/** * @brief The operator table used for manual generation and dispatch. */
+optable[] = {
         /* THESE MUST BE DEFINED IN THE ORDER OF THEIR VALUES */
-        {
 
-                {"__ILLEGAL", dummy_, "->",
-                        "internal error, cannot happen - supposedly."},
+        {"__ILLEGAL", dummy_, "->",
+                "internal error, cannot happen - supposedly."},
 
-                {"__COPIED", dummy_, "->",
-                        "no message ever, used for gc."},
+        {"__COPIED", dummy_, "->",
+                "no message ever, used for gc."},
 
-                {"__USR", dummy_, "usg",
-                        "user node."},
+        {"__USR", dummy_, "usg",
+                "user node."},
 
-                {"__ANON_FUNCT", dummy_, "->",
-                        "op for anonymous function call."},
+        {"__ANON_FUNCT", dummy_, "->",
+                "op for anonymous function call."},
 
-/* LITERALS */
+        /* MARK: LITERALS */
 
-                {" truth value type", dummy_, "->  B",
-                        "The logical type, or the type of truth values. It has just two literals: true and false."},
+        {" truth value type", dummy_, "->  B",
+                "The logical type, or the type of truth values. It has just two literals: true and false."},
 
-                {" character type", dummy_, "->  C",
-                        "The type of characters. Literals are written with a single quote. Examples:  'A  '7  ';  and so on. Unix style escapes are allowed."},
+        {" character type", dummy_, "->  C",
+                "The type of characters. Literals are written with a single quote. Examples:  'A  '7  ';  and so on. Unix style escapes are allowed."},
 
-                {" integer type", dummy_, "->  I",
-                        "The type of negative, zero or positive integers. Literals are written in decimal notation. Examples:  -123   0   42."},
+        {" integer type", dummy_, "->  I",
+                "The type of negative, zero or positive integers. Literals are written in decimal notation. Examples:  -123   0   42."},
 
-                {" set type", dummy_, "->  {...}",
-                        "The type of sets of small non-negative integers. The maximum is platform dependent, typically the range is 0..31. Literals are written inside curly braces. Examples:  {}  {0}  {1 3 5}  {19 18 17}."},
+        {" set type", dummy_, "->  {...}",
+                "The type of sets of small non-negative integers. The maximum is platform dependent, typically the range is 0..31. Literals are written inside curly braces. Examples:  {}  {0}  {1 3 5}  {19 18 17}."},
 
-                {" string type", dummy_, "->  \"...\" ",
-                        "The type of strings of characters. Literals are written inside double quotes. Examples: \"\"  \"A\"  \"hello world\" \"123\". Unix style escapes are accepted."},
+        {" string type", dummy_, "->  \"...\" ",
+                "The type of strings of characters. Literals are written inside double quotes. Examples: \"\"  \"A\"  \"hello world\" \"123\". Unix style escapes are accepted."},
 
-                {" list type", dummy_, "->  [...]",
-                        "The type of lists of values of any type (including lists), or the type of quoted programs which may contain operators or combinators. Literals of this type are written inside square brackets. Examples: []  [3 512 -7]  [john mary]  ['A 'C ['B]]  [dup *]."},
+        {" list type", dummy_, "->  [...]",
+                "The type of lists of values of any type (including lists), or the type of quoted programs which may contain operators or combinators. Literals of this type are written inside square brackets. Examples: []  [3 512 -7]  [john mary]  ['A 'C ['B]]  [dup *]."},
 
-/* OPERANDS */
+        /* MARK: OPERANDS */
 
-                {"false", false_, "->  false",
-                        "Pushes the value false."},
+        {"false", false_, "->  false",
+                "Pushes the value false."},
 
-                {"true", true_, "->  true",
-                        "Pushes the value true."},
+        {"true", true_, "->  true",
+                "Pushes the value true."},
 
-                {"maxint", maxint_, "->  maxint",
-                        "Pushes largest integer (platform dependent). Typically it is 32 bits."},
+        {"maxint", maxint_, "->  maxint",
+                "Pushes largest integer (platform dependent). Typically it is 32 bits."},
 
-                {"setsize", setsize_, "->  setsize",
-                        "Pushes the maximum number of elements in a set (platform dependent). Typically it is 32, and set members are in the range 0..31."},
+        {"setsize", setsize_, "->  setsize",
+                "Pushes the maximum number of elements in a set (platform dependent). Typically it is 32, and set members are in the range 0..31."},
 
-                {"stack", stack_, ".. X Y Z  ->  .. X Y Z [Z Y X ..]",
-                        "Pushes the stack as a list."},
+        {"stack", stack_, ".. X Y Z  ->  .. X Y Z [Z Y X ..]",
+                "Pushes the stack as a list."},
 
-                {"__symtabmax", symtabmax_, "->",
-                        "Pushes value of maximum size of the symbol table."},
+        {"__symtabmax", symtabmax_, "->",
+                "Pushes value of maximum size of the symbol table."},
 
-                {"__symtabindex", symtabindex_, "->",
-                        "Pushes current size of the symbol table."},
+        {"__symtabindex", symtabindex_, "->",
+                "Pushes current size of the symbol table."},
 
-                {"__dump", dump_, "->",
-                        "debugging only: pushes the dump as a list."},
+        {"__dump", dump_, "->",
+                "debugging only: pushes the dump as a list."},
 
-                {"conts", conts_, "->  [[P] [Q] ..]",
-                        "Pushes current continuations."},
+        {"conts", conts_, "->  [[P] [Q] ..]",
+                "Pushes current continuations."},
 
-                {"autoput", autoput_, "->  I",
-                        "Pushes current value of flag  for automatic output, I = 0..2."},
+        {"autoput", autoput_, "->  I",
+                "Pushes current value of flag  for automatic output, I = 0..2."},
 
-                {"echo", echo_, "->  I",
-                        "Pushes value of echo flag, I = 0..3."},
+        {"echo", echo_, "->  I",
+                "Pushes value of echo flag, I = 0..3."},
 
-                {"clock", clock_, "->  I",
-                        "Pushes the integer value of current CPU usage in hundreds of a second."},
+        {"clock", clock_, "->  I",
+                "Pushes the integer value of current CPU usage in hundreds of a second."},
 
-                {"__memorymax", memorymax_, "->",
-                        "Pushes value of total size of memory."},
+        {"__memorymax", memorymax_, "->",
+                "Pushes value of total size of memory."},
 
-/* OPERATORS */
+        /* MARK: - OPERATORS */
 
-                {"id", id_, "->",
-                        "Identity function, does nothing. Any program of the form  P id Q  is equivalent to just  P Q."},
+        {"id", id_, "->",
+                "Identity function, does nothing. Any program of the form  P id Q  is equivalent to just  P Q."},
 
-                {"dup", dup_, " X  ->   X X",
-                        "Pushes an extra copy of X onto stack."},
+        {"dup", dup_, " X  ->   X X",
+                "Pushes an extra copy of X onto stack."},
 
-                {"swap", swap_, " X Y  ->   Y X",
-                        "Interchanges X and Y on top of the stack."},
+        {"swap", swap_, " X Y  ->   Y X",
+                "Interchanges X and Y on top of the stack."},
 
-                {"rollup", rollup_, "X Y Z  ->  Z X Y",
-                        "Moves X and Y up, moves Z down"},
+        {"rollup", rollup_, "X Y Z  ->  Z X Y",
+                "Moves X and Y up, moves Z down"},
 
-                {"rolldown", rolldown_, "X Y Z  ->  Y Z X",
-                        "Moves Y and Z down, moves X up"},
+        {"rolldown", rolldown_, "X Y Z  ->  Y Z X",
+                "Moves Y and Z down, moves X up"},
 
-                {"rotate", rotate_, "X Y Z  ->  Z Y X",
-                        "Interchanges X and Z"},
+        {"rotate", rotate_, "X Y Z  ->  Z Y X",
+                "Interchanges X and Z"},
 
-                {"pop", pop_, " X  ->",
-                        "Removes X from top of the stack."},
+        {"pop", pop_, " X  ->",
+                "Removes X from top of the stack."},
 
-                {"choice", choice_, "B T F  ->  X",
-                        "If B is true, then X = T else X = F."},
+        {"choice", choice_, "B T F  ->  X",
+                "If B is true, then X = T else X = F."},
 
-                {"or", or_, "X Y  ->  Z",
-                        "Z is the union of sets X and Y, logical disjunction for truth values."},
+        {"or", or_, "X Y  ->  Z",
+                "Z is the union of sets X and Y, logical disjunction for truth values."},
 
-                {"xor", xor_, "X Y  ->  Z",
-                        "Z is the symmetric difference of sets X and Y, logical exclusive disjunction for truth values."},
+        {"xor", xor_, "X Y  ->  Z",
+                "Z is the symmetric difference of sets X and Y, logical exclusive disjunction for truth values."},
 
-                {"and", and_, "X Y  ->  Z",
-                        "Z is the intersection of sets X and Y, logical conjunction for truth values."},
+        {"and", and_, "X Y  ->  Z",
+                "Z is the intersection of sets X and Y, logical conjunction for truth values."},
 
-                {"not", not_, "X  ->  Y",
-                        "Y is the complement of set X, logical negation for truth values."},
+        {"not", not_, "X  ->  Y",
+                "Y is the complement of set X, logical negation for truth values."},
 
-                {"+", plus_, "M I  ->  N",
-                        "Numeric N is the result of adding integer I to numeric M."},
+        {"+", plus_, "M I  ->  N",
+                "Numeric N is the result of adding integer I to numeric M."},
 
-                {"-", minus_, "M I  ->  N",
-                        "Numeric N is the result of subtracting integer I from numeric M."},
+        {"-", minus_, "M I  ->  N",
+                "Numeric N is the result of subtracting integer I from numeric M."},
 
-                {"*", mul_, "I J  ->  K",
-                        "Integer K is the product of integers I and J."},
+        {"*", mul_, "I J  ->  K",
+                "Integer K is the product of integers I and J."},
 
-                {"/", divide_, "I J  ->  K",
-                        "Integer K is the (rounded) ratio of integers I and J."},
+        {"/", divide_, "I J  ->  K",
+                "Integer K is the (rounded) ratio of integers I and J."},
 
-                {"rem", rem_, "I J  ->  K",
-                        "Integer K is the remainder of dividing I by J."},
+        {"rem", rem_, "I J  ->  K",
+                "Integer K is the remainder of dividing I by J."},
 
-                {"sign", sign_, "I  ->  J",
-                        "Integer J is the sign (-1 or 0 or +1) of integer I."},
+        {"sign", sign_, "I  ->  J",
+                "Integer J is the sign (-1 or 0 or +1) of integer I."},
 
-                {"abs", abs_, "I  ->  J",
-                        "Integer J is the absolute value (0,1,2..) of integer I."},
+        {"abs", abs_, "I  ->  J",
+                "Integer J is the absolute value (0,1,2..) of integer I."},
 
-                {"pred", pred_, "M  ->  N",
-                        "Numeric N is the predecessor of numeric M."},
+        {"pred", pred_, "M  ->  N",
+                "Numeric N is the predecessor of numeric M."},
 
-                {"succ", succ_, "M  ->  N",
-                        "Numeric N is the successor of numeric M."},
+        {"succ", succ_, "M  ->  N",
+                "Numeric N is the successor of numeric M."},
 
-                {"max", max_, "N1 N2  ->  N",
-                        "N is the maximum of numeric values N1 and N2."},
+        {"max", max_, "N1 N2  ->  N",
+                "N is the maximum of numeric values N1 and N2."},
 
-                {"min", min_, "N1 N2  ->  N",
-                        "N is the minimum of numeric values N1 and N2."},
+        {"min", min_, "N1 N2  ->  N",
+                "N is the minimum of numeric values N1 and N2."},
 
-                {"unstack", unstack_, "[X Y ..]  ->  ..Y X",
-                        "The list [X Y ..] becomes the new stack."},
+        {"unstack", unstack_, "[X Y ..]  ->  ..Y X",
+                "The list [X Y ..] becomes the new stack."},
 
-                {"cons", cons_, "X A  ->  B",
-                        "Aggregate B is A with a new member X (first member for sequences)."},
+        {"cons", cons_, "X A  ->  B",
+                "Aggregate B is A with a new member X (first member for sequences)."},
 
-                {"swons", swons_, "A X  ->  B",
-                        "Aggregate B is A with a new member X (first member for sequences)."},
+        {"swons", swons_, "A X  ->  B",
+                "Aggregate B is A with a new member X (first member for sequences)."},
 
-                {"first", first_, "A  ->  F",
-                        "F is the first member of the non-empty aggregate A."},
+        {"first", first_, "A  ->  F",
+                "F is the first member of the non-empty aggregate A."},
 
-                {"rest", rest_, "A  ->  R",
-                        "R is the non-empty aggregate A with its first member removed."},
+        {"rest", rest_, "A  ->  R",
+                "R is the non-empty aggregate A with its first member removed."},
 
-                {"compare", compare_, "A B  ->  I",
-                        "I (=-1,0,+1) is the comparison of aggregates A and B.  The values correspond to the predicates <=, =, >=."},
+        {"compare", compare_, "A B  ->  I",
+                "I (=-1,0,+1) is the comparison of aggregates A and B.  The values correspond to the predicates <=, =, >=."},
 
-                {"at", at_, "A I  ->  X",
-                        "X (= A[I]) is the member of A at position I."},
+        {"at", at_, "A I  ->  X",
+                "X (= A[I]) is the member of A at position I."},
 
-                {"of", of_, "I A  ->  X",
-                        "X (= A[I]) is the I-th member of aggregate A."},
+        {"of", of_, "I A  ->  X",
+                "X (= A[I]) is the I-th member of aggregate A."},
 
-                {"size", size_, "A  ->  I",
-                        "Integer I is the number of elements of aggregate A."},
+        {"size", size_, "A  ->  I",
+                "Integer I is the number of elements of aggregate A."},
 
-                {"opcase", opcase_, "X [..[X Xs]..]  ->  [Xs]",
-                        "Indexing on type of X, returns the list [Xs]."},
+        {"opcase", opcase_, "X [..[X Xs]..]  ->  [Xs]",
+                "Indexing on type of X, returns the list [Xs]."},
 
-                {"uncons", uncons_, "A  ->  F R",
-                        "F and R are the first and the rest of non-empty aggregate A."},
+        {"uncons", uncons_, "A  ->  F R",
+                "F and R are the first and the rest of non-empty aggregate A."},
 
-                {"unswons", unswons_, "A  ->  R F",
-                        "R and F are the rest and the first of non-empty aggregate A."},
+        {"unswons", unswons_, "A  ->  R F",
+                "R and F are the rest and the first of non-empty aggregate A."},
 
-                {"drop", drop_, "A N  ->  B",
-                        "Aggregate B is the result of deleting the first N elements of A."},
+        {"drop", drop_, "A N  ->  B",
+                "Aggregate B is the result of deleting the first N elements of A."},
 
-                {"take", take_, "A N  ->  B",
-                        "Aggregate B is the result of retaining just the first N elements of A."},
+        {"take", take_, "A N  ->  B",
+                "Aggregate B is the result of retaining just the first N elements of A."},
 
-                {"concat", concat_, "S T  ->  U",
-                        "Sequence U is the concatenation of sequences S and T."},
+        {"concat", concat_, "S T  ->  U",
+                "Sequence U is the concatenation of sequences S and T."},
 
-                {"name", name_, "sym  ->  \"sym\"",
-                        "For operators and combinators, the string \"sym\" is the name of item sym, for literals sym the result string is its type."},
+        {"name", name_, "sym  ->  \"sym\"",
+                "For operators and combinators, the string \"sym\" is the name of item sym, for literals sym the result string is its type."},
 
-                {"body", body_, "U  ->  [P]",
-                        "Quotation [P] is the body of user-defined symbol U."},
+        {"body", body_, "U  ->  [P]",
+                "Quotation [P] is the body of user-defined symbol U."},
 
-                {"nullval", nullval_, "A  ->  A0",
-                        "A0 is the empty aggregate of the type of A, or the 0-value of numerics."},
+        {"nullval", nullval_, "A  ->  A0",
+                "A0 is the empty aggregate of the type of A, or the 0-value of numerics."},
 
-/* PREDICATES */
+/* MARK: PREDICATES */
 
-                {"null", null_, "X  ->  B",
-                        "Tests for empty aggregate X or zero numeric."},
+        {"null", null_, "X  ->  B",
+                "Tests for empty aggregate X or zero numeric."},
 
-                {"small", small_, "X  ->  B",
-                        "Tests whether aggregate X has 0 or 1 members, or numeric 0 or 1."},
+        {"small", small_, "X  ->  B",
+                "Tests whether aggregate X has 0 or 1 members, or numeric 0 or 1."},
 
-                {">=", geql_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X greater than or equal to Y."},
+        {">=", geql_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X greater than or equal to Y."},
 
-                {">", greater_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X greater than Y."},
+        {">", greater_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X greater than Y."},
 
-                {"<=", leql_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X less than or equal to Y."},
+        {"<=", leql_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X less than or equal to Y."},
 
-                {"<", less_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X less than Y."},
+        {"<", less_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X less than Y."},
 
-                {"!=", neql_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X not equal to Y."},
+        {"!=", neql_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X not equal to Y."},
 
-                {"=", eql_, "X Y  ->  B",
-                        "Either both X and Y are numeric or both are strings or symbols. Tests whether X equal to Y."},
+        {"=", eql_, "X Y  ->  B",
+                "Either both X and Y are numeric or both are strings or symbols. Tests whether X equal to Y."},
 
-                {"equal", equal_, "T U  ->  B",
-                        "(Recursively) tests whether trees T and U are identical."},
+        {"equal", equal_, "T U  ->  B",
+                "(Recursively) tests whether trees T and U are identical."},
 
-                {"has", has_, "A X  ->  B",
-                        "Tests whether aggregate A has X as a member."},
+        {"has", has_, "A X  ->  B",
+                "Tests whether aggregate A has X as a member."},
 
-                {"in", in_, "X A  ->  B",
-                        "Tests whether X is a member of aggregate A."},
+        {"in", in_, "X A  ->  B",
+                "Tests whether X is a member of aggregate A."},
 
-                {"integer", integer_, "X  ->  B",
-                        "Tests whether X is an integer."},
+        {"integer", integer_, "X  ->  B",
+                "Tests whether X is an integer."},
 
-                {"char", char_, "X  ->  B",
-                        "Tests whether X is a character."},
+        {"char", char_, "X  ->  B",
+                "Tests whether X is a character."},
 
-                {"logical", logical_, "X  ->  B",
-                        "Tests whether X is a logical."},
+        {"logical", logical_, "X  ->  B",
+                "Tests whether X is a logical."},
 
-                {"set", set_, "X  ->  B",
-                        "Tests whether X is a set."},
+        {"set", set_, "X  ->  B",
+                "Tests whether X is a set."},
 
-                {"string", string_, "X  ->  B",
-                        "Tests whether X is a string."},
+        {"string", string_, "X  ->  B",
+                "Tests whether X is a string."},
 
-                {"list", list_, "X  ->  B",
-                        "Tests whether X is a list."},
+        {"list", list_, "X  ->  B",
+                "Tests whether X is a list."},
 
-                {"leaf", leaf_, "X  ->  B",
-                        "Tests whether X is not a list."},
+        {"leaf", leaf_, "X  ->  B",
+                "Tests whether X is not a list."},
 
-                {"user", user_, "X  ->  B",
-                        "Tests whether X is a user-defined symbol."},
+        {"user", user_, "X  ->  B",
+                "Tests whether X is a user-defined symbol."},
 
-/* COMBINATORS */
+/* MARK: COMBINATORS */
 
-                {"i", i_, "[P]  ->  ...",
-                        "Executes P. So, [P] i  ==  P."},
+        {"i", i_, "[P]  ->  ...",
+                "Executes P. So, [P] i  ==  P."},
 
-                {"x", x_, "[P]i  ->  ...",
-                        "Executes P without popping [P]. So, [P] x  ==  [P] P."},
+        {"x", x_, "[P]i  ->  ...",
+                "Executes P without popping [P]. So, [P] x  ==  [P] P."},
 
-                {"dip", dip_, "X [P]  ->  ... X",
-                        "Saves X, executes P, pushes X back."},
+        {"dip", dip_, "X [P]  ->  ... X",
+                "Saves X, executes P, pushes X back."},
 
-                {"popd", popd_, "Y Z  ->  Z",
-                        "As if defined by:   popd  ==  [pop] dip "},
+        {"popd", popd_, "Y Z  ->  Z",
+                "As if defined by:   popd  ==  [pop] dip "},
 
-                {"dupd", dupd_, "Y Z  ->  Y Y Z",
-                        "As if defined by:   dupd  ==  [dup] dip"},
+        {"dupd", dupd_, "Y Z  ->  Y Y Z",
+                "As if defined by:   dupd  ==  [dup] dip"},
 
-                {"swapd", swapd_, "X Y Z  ->  Y X Z",
-                        "As if defined by:   swapd  ==  [swap] dip"},
+        {"swapd", swapd_, "X Y Z  ->  Y X Z",
+                "As if defined by:   swapd  ==  [swap] dip"},
 
-                {"rollupd", rollupd_, "X Y Z W  ->  Z X Y W",
-                        "As if defined by:   rollupd  ==  [rollup] dip"},
+        {"rollupd", rollupd_, "X Y Z W  ->  Z X Y W",
+                "As if defined by:   rollupd  ==  [rollup] dip"},
 
-                {"rolldownd", rolldownd_, "X Y Z W  ->  Y Z X W",
-                        "As if defined by:   rolldownd  ==  [rolldown] dip "},
+        {"rolldownd", rolldownd_, "X Y Z W  ->  Y Z X W",
+                "As if defined by:   rolldownd  ==  [rolldown] dip "},
 
-                {"rotated", rotated_, "X Y Z W  ->  Z Y X W",
-                        "As if defined by:   rotated  ==  [rotate] dip"},
+        {"rotated", rotated_, "X Y Z W  ->  Z Y X W",
+                "As if defined by:   rotated  ==  [rotate] dip"},
 
-                {"app1", app1_, "X [P]  ->  R",
-                        "Executes P, pushes result R on stack without X."},
+        {"app1", app1_, "X [P]  ->  R",
+                "Executes P, pushes result R on stack without X."},
 
-                {"app2", app2_, "X1 X2 [P]  ->  R1 R2",
-                        "Executes P twice, with X1 and X2 on top of the stack. Returns the two values R1 and R2."},
+        {"app2", app2_, "X1 X2 [P]  ->  R1 R2",
+                "Executes P twice, with X1 and X2 on top of the stack. Returns the two values R1 and R2."},
 
-                {"app3", app3_, "X1 X2 X3 [P]  ->  R1 R2 R3",
-                        "Executes P three times, with Xi, returns Ri (i = 1..3)."},
+        {"app3", app3_, "X1 X2 X3 [P]  ->  R1 R2 R3",
+                "Executes P three times, with Xi, returns Ri (i = 1..3)."},
 
-                {"app4", app4_, "X1 X2 X3 X4 [P]  ->  R1 R2 R3 R4",
-                        "Executes P four times, with Xi, returns Ri (i = 1..4)."},
+        {"app4", app4_, "X1 X2 X3 X4 [P]  ->  R1 R2 R3 R4",
+                "Executes P four times, with Xi, returns Ri (i = 1..4)."},
 
-                {"app11", app11_, "X Y [P]  ->  R",
-                        "Executes P, pushes result R on stack."},
+        {"app11", app11_, "X Y [P]  ->  R",
+                "Executes P, pushes result R on stack."},
 
-                {"app12", app12_, "X Y1 Y2 [P]  ->  R1 R2",
-                        "Executes P twice, with Y1 and Y2, returns R1 and R2."},
+        {"app12", app12_, "X Y1 Y2 [P]  ->  R1 R2",
+                "Executes P twice, with Y1 and Y2, returns R1 and R2."},
 
-                {"construct", construct_, "[P] [[P1] [P2] ..]  ->  R1 R2 ..",
-                        "Saves state of stack and then executes [P]. Then executes each [Pi] to give Ri pushed onto saved stack."},
+        {"construct", construct_, "[P] [[P1] [P2] ..]  ->  R1 R2 ..",
+                "Saves state of stack and then executes [P]. Then executes each [Pi] to give Ri pushed onto saved stack."},
 
-                {"nullary", nullary_, "[P]  ->  R",
-                        "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, none are removed from the stack."},
+        {"nullary", nullary_, "[P]  ->  R",
+                "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, none are removed from the stack."},
 
-                {"unary", unary_, "X [P]  ->  R",
-                        "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly one is removed from the stack."},
+        {"unary", unary_, "X [P]  ->  R",
+                "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly one is removed from the stack."},
 
-                {"binary", binary_, "X Y [P]  ->  R",
-                        "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly two removed from the stack."},
+        {"binary", binary_, "X Y [P]  ->  R",
+                "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly two removed from the stack."},
 
-                {"ternary", ternary_, "X Y Z [P]  ->  R",
-                        "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly three are removed from the stack."},
+        {"ternary", ternary_, "X Y Z [P]  ->  R",
+                "Executes P, which leaves R on top of the stack. No matter how many parameters this consumes, exactly three are removed from the stack."},
 
-                {"cleave", cleave_, "X [P1] [P2]  ->  R1 R2",
-                        "Executes P1 and P2, each with X on top, producing two results."},
+        {"cleave", cleave_, "X [P1] [P2]  ->  R1 R2",
+                "Executes P1 and P2, each with X on top, producing two results."},
 
-                {"branch", branch_, "B [T] [F]  ->  ...",
-                        "If B is true, then executes T else executes F."},
+        {"branch", branch_, "B [T] [F]  ->  ...",
+                "If B is true, then executes T else executes F."},
 
-                {"ifte", ifte_, "[B] [T] [F]  ->  ...",
-                        "Executes B. If that yields true, then executes T else executes F."},
+        {"ifte", ifte_, "[B] [T] [F]  ->  ...",
+                "Executes B. If that yields true, then executes T else executes F."},
 
-                {"ifinteger", ifinteger_, "X [T] [E]  ->  ...",
-                        "If X is an integer, executes T else executes E."},
+        {"ifinteger", ifinteger_, "X [T] [E]  ->  ...",
+                "If X is an integer, executes T else executes E."},
 
-                {"ifchar", ifchar_, "X [T] [E]  ->  ...",
-                        "If X is a character, executes T else executes E."},
+        {"ifchar", ifchar_, "X [T] [E]  ->  ...",
+                "If X is a character, executes T else executes E."},
 
-                {"iflogical", iflogical_, "X [T] [E]  ->  ...",
-                        "If X is a logical or truth value, executes T else executes E."},
+        {"iflogical", iflogical_, "X [T] [E]  ->  ...",
+                "If X is a logical or truth value, executes T else executes E."},
 
-                {"ifset", ifset_, "X [T] [E]  ->  ...",
-                        "If X is a set, executes T else executes E."},
+        {"ifset", ifset_, "X [T] [E]  ->  ...",
+                "If X is a set, executes T else executes E."},
 
-                {"ifstring", ifstring_, "X [T] [E]  ->  ...",
-                        "If X is a string, executes T else executes E."},
+        {"ifstring", ifstring_, "X [T] [E]  ->  ...",
+                "If X is a string, executes T else executes E."},
 
-                {"iflist", iflist_, "X [T] [E]  ->  ...",
-                        "If X is a list, executes T else executes E."},
+        {"iflist", iflist_, "X [T] [E]  ->  ...",
+                "If X is a list, executes T else executes E."},
 
-                {"cond", cond_, "[..[[Bi] Ti]..[D]]  ->  ...",
-                        "Tries each Bi. If that yields true, then executes Ti and exits. If no Bi yields true, executes default D."},
+        {"cond", cond_, "[..[[Bi] Ti]..[D]]  ->  ...",
+                "Tries each Bi. If that yields true, then executes Ti and exits. If no Bi yields true, executes default D."},
 
-                {"while", while_, "[B] [D]  ->  ...",
-                        "While executing B yields true executes D."},
+        {"while", while_, "[B] [D]  ->  ...",
+                "While executing B yields true executes D."},
 
-                {"linrec", linrec_, "[I] [T] [R1] [R2]  ->  ...",
-                        "Executes I. If that yields true, executes T. Else executes R1, recurses, executes R2."},
+        {"linrec", linrec_, "[I] [T] [R1] [R2]  ->  ...",
+                "Executes I. If that yields true, executes T. Else executes R1, recurses, executes R2."},
 
-                {"reclin", reclin_, "[I] [R1] [T] [R2]  ->  ...",
-                        "Executes I. If that yields true, executes T. Else executes R1, recurses, executes R2. (= linrec with 2nd and 3rd parameter interchanged.)"},
+        {"reclin", reclin_, "[I] [R1] [T] [R2]  ->  ...",
+                "Executes I. If that yields true, executes T. Else executes R1, recurses, executes R2. (= linrec with 2nd and 3rd parameter interchanged.)"},
 
-                {"tailrec", tailrec_, "[P] [T] [R1]  ->  ...",
-                        "Executes P. If that yields true, executes T. Else executes R1, recurses."},
+        {"tailrec", tailrec_, "[P] [T] [R1]  ->  ...",
+                "Executes P. If that yields true, executes T. Else executes R1, recurses."},
 
-                {"binrec", binrec_, "[B] [T] [R1] [R2]  ->  ...",
-                        "Executes P. If that yields true, executes T. Else uses R1 to produce two intermediates, recurses on both, then executes R2 to combines their results."},
+        {"binrec", binrec_, "[B] [T] [R1] [R2]  ->  ...",
+                "Executes P. If that yields true, executes T. Else uses R1 to produce two intermediates, recurses on both, then executes R2 to combines their results."},
 
-                {"genrec", genrec_, "[B] [T] [R1] [R2]  ->  ...",
-                        "Executes B, if that yields true executes T. Else executes R1 and then [[B] [T] [R1] [R2] genrec] R2."},
+        {"genrec", genrec_, "[B] [T] [R1] [R2]  ->  ...",
+                "Executes B, if that yields true executes T. Else executes R1 and then [[B] [T] [R1] [R2] genrec] R2."},
 
-                {"condlinrec", condlinrec_, "[ [C1] [C2] .. [D] ]  ->  ...",
-                        "Each [Ci] is of the forms [[B] [T]] or [[B] [R1] [R2]]. Tries each B. If that yields true and there is just a [T], executes T and exit.  If there are [R1] and [R2], executes R1, recurses, executes R2. Subsequent case are ignored. If no B yields true, then [D] is used. It is of the forms [[T]] or [[R1] [R2]]. For the former, executes T. For the latter executes R1, recurses, executes R2."},
+        {"condlinrec", condlinrec_, "[ [C1] [C2] .. [D] ]  ->  ...",
+                "Each [Ci] is of the forms [[B] [T]] or [[B] [R1] [R2]]. Tries each B. If that yields true and there is just a [T], executes T and exit.  If there are [R1] and [R2], executes R1, recurses, executes R2. Subsequent case are ignored. If no B yields true, then [D] is used. It is of the forms [[T]] or [[R1] [R2]]. For the former, executes T. For the latter executes R1, recurses, executes R2."},
 
-                {"step", step_, "A  [P]  ->  ...",
-                        "Sequentially putting members of aggregate A onto stack, executes P for each member of A."},
+        {"step", step_, "A  [P]  ->  ...",
+                "Sequentially putting members of aggregate A onto stack, executes P for each member of A."},
 
-                {"fold", fold_, "A  V0  BIN  ->  V1",
-                        "Starting with value V0, sequentially puts members of aggregate A onto stack andcombines with binary operator BIN to finally prodice value V1"},
+        {"fold", fold_, "A  V0  BIN  ->  V1",
+                "Starting with value V0, sequentially puts members of aggregate A onto stack andcombines with binary operator BIN to finally prodice value V1"},
 
-                {"map", map_, "A [P]  ->  B",
-                        "Executes P on each member of aggregate A, collects results in sametype aggregate B."},
+        {"map", map_, "A [P]  ->  B",
+                "Executes P on each member of aggregate A, collects results in sametype aggregate B."},
 
-                {"times", times_, "[P] N  ->  ...",
-                        "Executes P  N times."},
+        {"times", times_, "[P] N  ->  ...",
+                "Executes P  N times."},
 
-                {"infra", infra_, "L1 [P]  ->  L2",
-                        "Using list L1 as stack, executes P and returns a new list L2."},
+        {"infra", infra_, "L1 [P]  ->  L2",
+                "Using list L1 as stack, executes P and returns a new list L2."},
 
-                {"primrec", primrec_, "X [I] [C]  ->  R",
-                        "Executes I to obtain an initial value R0. For integer X uses increasing positive integers up to X and combines by C for new R. For aggregate X uses successive members and combines by C for new R."},
+        {"primrec", primrec_, "X [I] [C]  ->  R",
+                "Executes I to obtain an initial value R0. For integer X uses increasing positive integers up to X and combines by C for new R. For aggregate X uses successive members and combines by C for new R."},
 
-                {"filter", filter_, "A [B]  ->  A1",
-                        "Uses test B to filter aggregate A producing sametype aggregate A1."},
+        {"filter", filter_, "A [B]  ->  A1",
+                "Uses test B to filter aggregate A producing sametype aggregate A1."},
 
-                {"split", split_, "A [B]  ->  A1 A2",
-                        "Uses test B to split aggregate A into sametype aggregates A1 and A2 ."},
+        {"split", split_, "A [B]  ->  A1 A2",
+                "Uses test B to split aggregate A into sametype aggregates A1 and A2 ."},
 
-                {"some", some_, "A  [B]  ->  X",
-                        "Applies test B to members of aggregate A, X = true if some pass."},
+        {"some", some_, "A  [B]  ->  X",
+                "Applies test B to members of aggregate A, X = true if some pass."},
 
-                {"all", all_, "A [B]  ->  X",
-                        "Applies test B to members of aggregate A, X = true if all pass."},
+        {"all", all_, "A [B]  ->  X",
+                "Applies test B to members of aggregate A, X = true if all pass."},
 
-                {"treestep", treestep_, "T [P]  ->  ...",
-                        "Recursivly traverses leaves of tree T, executes P for each leaf."},
+        {"treestep", treestep_, "T [P]  ->  ...",
+                "Recursivly traverses leaves of tree T, executes P for each leaf."},
 
-                {"treerec", treerec_, "T [O] [C]  ->  ...",
-                        "T is a tree. If T is a leaf, executes O. Else executes [[O] [C] treerec] C."},
+        {"treerec", treerec_, "T [O] [C]  ->  ...",
+                "T is a tree. If T is a leaf, executes O. Else executes [[O] [C] treerec] C."},
 
-                {"treegenrec", treegenrec_, "T [O1] [O2] [C]  ->  ...",
-                        "T is a tree. If T is a leaf, executes O1. Else executes O2 and then [[O1] [O2] [C] treegenrec] C."},
+        {"treegenrec", treegenrec_, "T [O1] [O2] [C]  ->  ...",
+                "T is a tree. If T is a leaf, executes O1. Else executes O2 and then [[O1] [O2] [C] treegenrec] C."},
 
-/* MISCELLANEOUS */
+/* MARK: MISCELLANEOUS */
 
-                {"help", help1_, "->",
-                        "Lists all defined symmbols, including those from library files. Then lists all primitives of raw Joy."},
+        {"help", help1_, "->",
+                "Lists all defined symmbols, including those from library files. Then lists all primitives of raw Joy."},
 
-                {"_help", h_help1_, "->",
-                        "Lists all hidden symbols in library and then all hidden inbuilt symbols."},
+        {"_help", h_help1_, "->",
+                "Lists all hidden symbols in library and then all hidden inbuilt symbols."},
 
-                {"helpdetail", helpdetail_, "[ S1  S2  .. ]",
-                        "Gives brief help on each symbol S in the list."},
+        {"helpdetail", helpdetail_, "[ S1  S2  .. ]",
+                "Gives brief help on each symbol S in the list."},
 
-                {"manual", o_online_manual_, "->",
-                        "Writes this manual of all Joy primitives to output file."},
+        {"manual", o_online_manual_, "->",
+                "Writes this manual of all Joy primitives to output file."},
 
-                {"__latex_manual", l_latex_manual_, "->",
-                        "Writes this manual of all Joy primitives in Latex to output file."},
+        {"__latex_manual", l_latex_manual_, "->",
+                "Writes this manual of all Joy primitives in Latex to output file."},
 
-                {"__settracegc", settracegc_, "I  ->",
-                        "Sets value of flag for tracing garbage collection to I (= 0..5)."},
+        {"__settracegc", settracegc_, "I  ->",
+                "Sets value of flag for tracing garbage collection to I (= 0..5)."},
 
-                {"setautoput", setautoput_, "I  ->",
-                        "Sets value of flag for automatic put to I (= 0 or 1)."},
+        {"setautoput", setautoput_, "I  ->",
+                "Sets value of flag for automatic put to I (= 0 or 1)."},
 
-                {"setecho", setecho_, "I ->",
-                        "Sets value of echo flag for listing. I = 0: no echo, 1: echo, 2: with tab, 3: and linenumber."},
+        {"setecho", setecho_, "I ->",
+                "Sets value of echo flag for listing. I = 0: no echo, 1: echo, 2: with tab, 3: and linenumber."},
 
-                {"gc", gc_, "->",
-                        "Initiates garbage collection."},
+        {"gc", gc_, "->",
+                "Initiates garbage collection."},
 
-                {"system", system_, "\"command\"  ->",
-                        "Escapes to shell, executes string \"command\". The string may cause execution of another program. When that has finished, the process returns to Joy."},
+        {"system", system_, "\"command\"  ->",
+                "Escapes to shell, executes string \"command\". The string may cause execution of another program. When that has finished, the process returns to Joy."},
 
-                {"__memoryindex", memoryindex_, "->",
-                        "Pushes current value of memory."},
+        {"__memoryindex", memoryindex_, "->",
+                "Pushes current value of memory."},
 
-                {"get", get_, "->  F",
-                        "Reads a factor from input and pushes it onto stack."},
+        {"get", get_, "->  F",
+                "Reads a factor from input and pushes it onto stack."},
 
-                {"put", put_, "X  ->",
-                        "Writes X to output, pops X off stack."},
+        {"put", put_, "X  ->",
+                "Writes X to output, pops X off stack."},
 
-                {"putch", putch_, "N  ->",
-                        "N : numeric, writes character whose ASCII is N."},
+        {"putch", putch_, "N  ->",
+                "N : numeric, writes character whose ASCII is N."},
 
-                {"include", include_, "\"filnam.ext\"  ->",
-                        "Transfers input to file whose name is \"filnam.ext\". On end-of-file returns to previous input file."},
+        {"include", include_, "\"filnam.ext\"  ->",
+                "Transfers input to file whose name is \"filnam.ext\". On end-of-file returns to previous input file."},
 
-                {"abort", abortexecution_, "->",
-                        "Aborts execution of current Joy program, returnsto Joy main cycle."},
+        {"abort", abortexecution_, "->",
+                "Aborts execution of current Joy program, returnsto Joy main cycle."},
 
-                {"quit", quit_, "->",
-                        "Exit from Joy."},
-                {0, dummy_, "->", "->"}
-        };
+        {"quit", quit_, "->",
+                "Exit from Joy."},
+        {0, dummy_, "->", "->"}
+};
 
-PUBLIC void inisymboltable(void)        /* initialise			*/
+PUBLIC void inisymboltable(void)        /* initialise */
 {
     int i;
     char *s;
@@ -2521,20 +2528,47 @@ PRIVATE void helpdetail_(void) {
     POP(stk);
 }
 
-#define HEADER(N, NAME, HEAD)                    \
-    if (strcmp(N,NAME) == 0)                    \
-      { printf("\n\n");                        \
-    if (latex) printf("\\item[--- \\BX{");            \
-    printf("%s",HEAD);                    \
-    if (latex) printf("} ---] \\verb# #");            \
-    printf("\n\n"); }
+#define HEADER(N, NAME, HEAD)                                         \
+    if (strcmp(N, NAME) == 0) {                                       \
+        printf("\n\n");                                               \
+        if (latex) {                                                  \
+            printf("\\item[--- \\BX{");                               \
+        }                                                             \
+        printf("%s", HEAD);                                           \
+        if (latex) {                                                  \
+            printf("} ---] \\verb# #");                               \
+        }                                                             \
+        printf("\n\n");                                               \
+    }
 
+
+/**
+ * @brief Generates the manual from the internal operator table (optable).
+ *
+ * Iterates through @c optable to print names and descriptions of primitives.
+ * It inserts section headers based on the first character of primitive names.
+ *
+ * @note Assumes the first character of each primitive's name is unique among
+ * library symbols to correctly trigger section headers.
+
+ *
+ * @param latex If 1, outputs LaTeX formatting (itemize/verbatim);
+ * if 0, outputs plain text.
+ * @return void. Prints directly to the current output stream (usually stdout).
+ */
 PRIVATE void make_manual(int latex) {
     int i;
     char *n;
     for (i = BOOLEAN_; optable[i].name != 0; i++) {
         n = optable[i].name;
-        HEADER(n, " truth value type", "literal") else HEADER(n, "false", "operand") else HEADER(n, "id", "operator") else HEADER(n, "null", "predicate") else HEADER(n, "i", "combinator") else HEADER(n, "help", "miscellaneous commands")
+
+        HEADER(n, " truth value type", "literal") else  \
+ HEADER(n, "false", "operand") else              \
+ HEADER(n, "id", "operator") else                \
+ HEADER(n, "null", "predicate") else             \
+ HEADER(n, "i", "combinator") else               \
+ HEADER(n, "help", "miscellaneous commands")
+
         if (n[0] != '_') {
             if (latex) {
                 if (n[0] == ' ') {
@@ -2542,13 +2576,23 @@ PRIVATE void make_manual(int latex) {
                     printf("\\item[\\BX{");
                 } else printf("\\item[\\JX{");
             }
+
             printf("%s", n);
+
             if (latex) printf("}]  \\verb#");
+
             printf("   :  %s", optable[i].messg1);
-            if (latex) printf("# \\\\ \n {\\small\\verb#");
-            else printf("\n");
+
+            if (latex) {
+                printf("# \\\\ \n {\\small\\verb#");
+            } else {
+                printf("\n");
+            }
+
             printf("%s", optable[i].messg2);
+
             if (latex) printf("#}");
+
             printf("\n\n");
         }
     }
