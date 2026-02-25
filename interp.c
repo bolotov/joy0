@@ -13,104 +13,104 @@
 
 /* #define TRACING */
 
-PUBLIC void printnode(Node *p);        /* file utils.c		*/
+PUBLIC void printnode(Node *p);        /* file utils.c */
 
-PRIVATE void helpdetail_(void);        /* this file		*/
+PRIVATE void helpdetail_(void);        /* this file */
 PRIVATE void make_manual(int latex);
 
 PUBLIC char *opername(int o);
 
-#define ONEPARAM(NAME)                        \
-    if (stk == NULL)                        \
+#define ONEPARAM(NAME)                                     \
+    if (stk == NULL)                                       \
     execerror("one parameter",NAME)
-#define TWOPARAMS(NAME)                        \
-    if (stk == NULL || stk->next == NULL)            \
+#define TWOPARAMS(NAME)                                    \
+    if (stk == NULL || stk->next == NULL)                  \
     execerror("two parameters",NAME)
-#define THREEPARAMS(NAME)                    \
-    if (stk == NULL || stk->next == NULL            \
-        || stk->next->next == NULL)                \
+#define THREEPARAMS(NAME)                                  \
+    if (stk == NULL || stk->next == NULL                   \
+        || stk->next->next == NULL)                        \
     execerror("three parameters",NAME)
-#define FOURPARAMS(NAME)                    \
-    if (stk == NULL || stk->next == NULL            \
-        || stk->next->next == NULL                \
-        || stk->next->next->next == NULL)            \
+#define FOURPARAMS(NAME)                                   \
+    if (stk == NULL || stk->next == NULL                   \
+        || stk->next->next == NULL                         \
+        || stk->next->next->next == NULL)                  \
     execerror("four parameters",NAME)
-#define FIVEPARAMS(NAME)                    \
-    if (stk == NULL || stk->next == NULL            \
-        || stk->next->next == NULL                \
-        || stk->next->next->next == NULL            \
-        || stk->next->next->next->next == NULL)        \
+#define FIVEPARAMS(NAME)                                   \
+    if (stk == NULL || stk->next == NULL                   \
+        || stk->next->next == NULL                         \
+        || stk->next->next->next == NULL                   \
+        || stk->next->next->next->next == NULL)            \
     execerror("five parameters",NAME)
-#define ONEQUOTE(NAME)                        \
-    if (stk->op != LIST_)                    \
+#define ONEQUOTE(NAME)                                     \
+    if (stk->op != LIST_)                                  \
     execerror("quotation as top parameter",NAME)
-#define TWOQUOTES(NAME)                        \
-    ONEQUOTE(NAME);                        \
-    if (stk->next->op != LIST_)                    \
+#define TWOQUOTES(NAME)                                    \
+    ONEQUOTE(NAME);                                        \
+    if (stk->next->op != LIST_)                            \
     execerror("quotation as second parameter",NAME)
-#define THREEQUOTES(NAME)                    \
-    TWOQUOTES(NAME);                        \
-    if (stk->next->next->op != LIST_)                \
+#define THREEQUOTES(NAME)                                  \
+    TWOQUOTES(NAME);                                       \
+    if (stk->next->next->op != LIST_)                      \
     execerror("quotation as third parameter",NAME)
-#define FOURQUOTES(NAME)                    \
-    THREEQUOTES(NAME);                        \
-    if (stk->next->next->next->op != LIST_)            \
+#define FOURQUOTES(NAME)                                   \
+    THREEQUOTES(NAME);                                     \
+    if (stk->next->next->next->op != LIST_)                \
     execerror("quotation as fourth parameter",NAME)
-#define FIVEQUOTES(NAME)                    \
-    FOURQUOTES(NAME);                        \
-    if (stk->next->next->next->next->op != LIST_)        \
+#define FIVEQUOTES(NAME)                                   \
+    FOURQUOTES(NAME);                                      \
+    if (stk->next->next->next->next->op != LIST_)          \
     execerror("quotation as fifth parameter",NAME)
-#define SAME2TYPES(NAME)                    \
-    if (stk->op != stk->next->op)                \
+#define SAME2TYPES(NAME)                                   \
+    if (stk->op != stk->next->op)                          \
     execerror("two parameters of the same type",NAME)
-#define STRING(NAME)                        \
-    if (stk->op != STRING_)                    \
+#define STRING(NAME)                                       \
+    if (stk->op != STRING_)                                \
     execerror("string",NAME)
-#define INTEGER(NAME)                        \
-    if (stk->op != INTEGER_)                    \
+#define INTEGER(NAME)                                      \
+    if (stk->op != INTEGER_)                               \
     execerror("integer",NAME)
-#define INTEGERS2(NAME)                        \
-    if (stk->op != INTEGER_ || stk->next->op != INTEGER_)    \
+#define INTEGERS2(NAME)                                    \
+    if (stk->op != INTEGER_ || stk->next->op != INTEGER_)  \
     execerror("two integers",NAME)
-#define NUMERICTYPE(NAME)                    \
-    if (stk->op != INTEGER_ && stk->op !=  CHAR_)        \
+#define NUMERICTYPE(NAME)                                  \
+    if (stk->op != INTEGER_ && stk->op !=  CHAR_)          \
     execerror("numeric",NAME)
-#define NUMERIC2(NAME)                        \
-    if (stk->next->op != INTEGER_ && stk->next->op != CHAR_)    \
+#define NUMERIC2(NAME)                                     \
+    if (stk->next->op != INTEGER_ && stk->next->op != CHAR_)           \
     execerror("numeric second parameter",NAME)
-#define CHECKZERO(NAME)                        \
-    if (stk->u.num == 0)                    \
+#define CHECKZERO(NAME)                                    \
+    if (stk->u.num == 0)                                   \
     execerror("non-zero operand",NAME)
-#define LIST(NAME)                        \
-    if (stk->op != LIST_)                    \
+#define LIST(NAME)                                         \
+    if (stk->op != LIST_)                                  \
     execerror("list",NAME)
-#define LIST2(NAME)                        \
-    if (stk->next->op != LIST_)                    \
+#define LIST2(NAME)                                        \
+    if (stk->next->op != LIST_)                            \
     execerror("list as second parameter",NAME)
-#define USERDEF(NAME)                        \
-    if (stk->op != USR_)                    \
+#define USERDEF(NAME)                                      \
+    if (stk->op != USR_)                                   \
     execerror("user defined symbol",NAME)
-#define CHECKLIST(OPR, NAME)                    \
-    if (OPR != LIST_)                        \
+#define CHECKLIST(OPR, NAME)                               \
+    if (OPR != LIST_)                                      \
     execerror("internal list",NAME)
-#define CHECKSETMEMBER(NODE, NAME)                \
-    if ((NODE->op != INTEGER_ && NODE->op != CHAR_) ||        \
-    NODE->u.num >= SETSIZE)                    \
+#define CHECKSETMEMBER(NODE, NAME)                         \
+    if ((NODE->op != INTEGER_ && NODE->op != CHAR_) ||     \
+    NODE->u.num >= SETSIZE)                                \
     execerror("small numeric",NAME)
-#define CHECKEMPTYSET(SET, NAME)                    \
-    if (SET == 0)                        \
+#define CHECKEMPTYSET(SET, NAME)                           \
+    if (SET == 0)                                          \
     execerror("non-empty set",NAME)
-#define CHECKEMPTYSTRING(STRING, NAME)                \
-    if (*STRING == '\0')                    \
+#define CHECKEMPTYSTRING(STRING, NAME)                     \
+    if (*STRING == '\0')                                   \
     execerror("non-empty string",NAME)
-#define CHECKEMPTYLIST(LIST, NAME)                \
-    if (LIST == NULL)                        \
+#define CHECKEMPTYLIST(LIST, NAME)                         \
+    if (LIST == NULL)                                      \
     execerror("non-empty list",NAME)
-#define INDEXTOOLARGE(NAME)                    \
+#define INDEXTOOLARGE(NAME)                                \
     execerror("smaller index",NAME)
-#define BADAGGREGATE(NAME)                    \
+#define BADAGGREGATE(NAME)                                 \
     execerror("aggregate parameter",NAME)
-#define BADDATA(NAME)                        \
+#define BADDATA(NAME)                                      \
     do { execerror("different type",NAME); break; } while (0)
 
 #define DMP dump->u.lis
@@ -143,17 +143,17 @@ PUBLIC char *opername(int o);
    (NODE->op == USR_  ?  NODE->u.ent->name :   \
     opername(NODE->op) ) )
 
-/* PUBLIC int clock(); */        /* file time.h		*/
+/* PUBLIC int clock(); */        /* file time.h */
 PUBLIC Node * newnode(Operator o, long l, Node *r);    /* file utils.c */
 PUBLIC void memoryindex_(void);
 
 PUBLIC void execerror(char *message, char *op);        /* file main.c	*/
 PUBLIC void abortexecution_(void);
 
-PUBLIC void getsym(void);            /* file scan.c		*/
+PUBLIC void getsym(void);                        /* file scan.c */
 PUBLIC void doinclude(char *filnam);
 
-PUBLIC void readfactor(void);        /* file utils.c		*/
+PUBLIC void readfactor(void);                    /* file utils.c */
 PUBLIC void writefactor(Node *n);
 
 PUBLIC void writeterm(Node *n);
@@ -167,10 +167,10 @@ PUBLIC void gc_(void);
 /* - - - -  O P E R A N D S   - - - - */
 
 #define PUSH(PROCEDURE, TYPE, VALUE)                \
-PRIVATE void PROCEDURE(void)                    \
+PRIVATE void PROCEDURE(void)                        \
 {   NULLARY(TYPE,VALUE); }
 
-PUSH(true_, BOOLEAN_, 1)                /* constants	*/
+PUSH(true_, BOOLEAN_, 1)                /* constants */
 PUSH(false_, BOOLEAN_, 0)
 
 PUSH(setsize_, INTEGER_, SETSIZE)
@@ -181,7 +181,7 @@ PUSH(symtabmax_, INTEGER_, SYMTABMAX)
 
 PUSH(memorymax_, INTEGER_, MEMORYMAX)
 
-PUSH(stack_, LIST_, stk)                /* variables	*/
+PUSH(stack_, LIST_, stk)                /* variables */
 PUSH(dump_, LIST_, dump)
 
 PUSH(conts_, LIST_, newnode(LIST_, conts->u.lis->next, conts->next))
@@ -276,17 +276,17 @@ PRIVATE void dup_(void) {
 /* - - -   BOOLEAN   - - - */
 
 #define ANDORXOR(PROCEDURE, NAME, OPER1, OPER2)            \
-PRIVATE void PROCEDURE(void)                    \
-{   TWOPARAMS(NAME);                        \
-    SAME2TYPES(NAME);                        \
-    switch (stk->next->op)                    \
-      { case SET_:                        \
+PRIVATE void PROCEDURE(void)                               \
+{   TWOPARAMS(NAME);                                       \
+    SAME2TYPES(NAME);                                      \
+    switch (stk->next->op)                                 \
+      { case SET_:                                         \
         BINARY(SET_,stk->next->u.set OPER1 stk->u.set);    \
         return;                        \
-    case BOOLEAN_: case CHAR_: case INTEGER_: case LIST_:    \
-        BINARY(BOOLEAN_,stk->next->u.num OPER2 stk->u.num);    \
-        return;                        \
-    default:                        \
+    case BOOLEAN_: case CHAR_: case INTEGER_: case LIST_:  \
+        BINARY(BOOLEAN_,stk->next->u.num OPER2 stk->u.num);\
+        return;                                            \
+    default:                                               \
         BADDATA(NAME); } }
 
 ANDORXOR(and_, "and", &, &&)
@@ -361,30 +361,30 @@ MAXMIN(max_, "max", <)
 
 MAXMIN(min_, "min", >)
 
-#define COMPREL(PROCEDURE, NAME, TYPE, OPR)            \
-PRIVATE void PROCEDURE(void)                    \
-  { int comp = 0;                        \
-    TWOPARAMS(NAME);                        \
-    switch (stk->op)                        \
-      { case BOOLEAN_: case CHAR_: case INTEGER_:        \
+#define COMPREL(PROCEDURE, NAME, TYPE, OPR)                \
+PRIVATE void PROCEDURE(void)                               \
+  { int comp = 0;                                          \
+    TWOPARAMS(NAME);                                       \
+    switch (stk->op)                                       \
+      { case BOOLEAN_: case CHAR_: case INTEGER_:          \
         comp = stk->next->u.num - stk->u.num OPR 0;        \
-        break;                        \
-    case SET_:                        \
-      { int i = 0;                        \
-        while ( i < SETSIZE &&                \
-            ( (stk->next->u.set & 1 << i) ==        \
-              (stk->u.set & 1 << i) )  )        \
-        ++i;                        \
-        if (i == SETSIZE) i = 0; else ++i;            \
-        if (!(stk->u.set & 1 << i)) i = -i;            \
-        comp = i OPR 0;                    \
-        break; }                        \
-    case LIST_:                        \
-        BADDATA(NAME);                    \
-    default:                        \
-        comp = strcmp(GETSTRING(stk->next), GETSTRING(stk))    \
-           OPR 0;                    \
-        break; }                        \
+        break;                                             \
+    case SET_:                                             \
+      { int i = 0;                                         \
+        while ( i < SETSIZE &&                             \
+            ( (stk->next->u.set & 1 << i) ==               \
+              (stk->u.set & 1 << i) )  )                   \
+        ++i;                                               \
+        if (i == SETSIZE) i = 0; else ++i;                 \
+        if (!(stk->u.set & 1 << i)) i = -i;                \
+        comp = i OPR 0;                                    \
+        break; }                                           \
+    case LIST_:                                            \
+        BADDATA(NAME);                                     \
+    default:                                               \
+        comp = strcmp(GETSTRING(stk->next), GETSTRING(stk)) \
+           OPR 0;                                          \
+        break; }                                           \
     BINARY(TYPE,comp); }
 
 COMPREL(eql_, "=", BOOLEAN_, ==)
@@ -515,16 +515,15 @@ PRIVATE void unswons_(void) {
 
 PRIVATE int equal_aux(Node *n1, Node *n2); /* forward */
 
-PRIVATE int equal_list_aux(Node *n1, Node *n2)
-{
+PRIVATE int equal_list_aux(Node *n1, Node *n2) {
     if (n1 == NULL && n2 == NULL) return 1;
     if (n1 == NULL || n2 == NULL) return 0;
     if (equal_aux(n1, n2))
         return equal_list_aux(n1->next, n2->next);
     else return 0;
 }
-PRIVATE int equal_aux(Node *n1, Node *n2)
-{
+
+PRIVATE int equal_aux(Node *n1, Node *n2) {
     if (n1 == NULL && n2 == NULL) return 1;
     if (n1 == NULL || n2 == NULL) return 0;
     switch (n1->op) {
@@ -581,36 +580,36 @@ INHAS(in_, "in", stk, stk->next)
 
 INHAS(has_, "has", stk->next, stk)
 
-#define OF_AT(PROCEDURE, NAME, AGGR, INDEX)            \
-PRIVATE void PROCEDURE(void)                    \
-{   TWOPARAMS(NAME);                        \
-    switch (AGGR->op)                        \
-      { case SET_:                        \
-      { int i; int indx = INDEX->u.num;            \
-        CHECKEMPTYSET(AGGR->u.set,NAME);            \
-        for (i = 0; i < SETSIZE; i++)            \
-          { if (AGGR->u.set & (1 << i))            \
-          { if (indx == 0)                \
-            {BINARY(INTEGER_,i); return;}        \
-            indx--; } }                    \
-        INDEXTOOLARGE(NAME);                \
-        return; }                        \
-    case STRING_:                        \
+#define OF_AT(PROCEDURE, NAME, AGGR, INDEX)                \
+PRIVATE void PROCEDURE(void)                               \
+{   TWOPARAMS(NAME);                                       \
+    switch (AGGR->op)                                      \
+      { case SET_:                                         \
+      { int i; int indx = INDEX->u.num;                    \
+        CHECKEMPTYSET(AGGR->u.set,NAME);                   \
+        for (i = 0; i < SETSIZE; i++)                      \
+          { if (AGGR->u.set & (1 << i))                    \
+          { if (indx == 0)                                 \
+            {BINARY(INTEGER_,i); return;}                  \
+            indx--; } }                                    \
+        INDEXTOOLARGE(NAME);                               \
+        return; }                                          \
+    case STRING_:                                          \
         if (strlen(AGGR->u.str) < (size_t)INDEX->u.num)    \
-        INDEXTOOLARGE(NAME);                \
-        BINARY(CHAR_,AGGR->u.str[INDEX->u.num]);        \
-        return;                        \
-    case LIST_:                        \
-      { Node *n = AGGR->u.lis;  int i  = INDEX->u.num;    \
-        CHECKEMPTYLIST(n,NAME);                \
-        while (i > 0)                    \
-          { if (n->next == NULL)                \
-            INDEXTOOLARGE(NAME);            \
-        n = n->next; i--; }                \
-        BINARY(n->op,n->u.num);                \
-        return; }                        \
-    default:                        \
-        BADAGGREGATE(NAME); }                \
+        INDEXTOOLARGE(NAME);                               \
+        BINARY(CHAR_,AGGR->u.str[INDEX->u.num]);           \
+        return;                                            \
+    case LIST_:                                            \
+      { Node *n = AGGR->u.lis;  int i  = INDEX->u.num;     \
+        CHECKEMPTYLIST(n,NAME);                            \
+        while (i > 0)                                      \
+          { if (n->next == NULL)                           \
+            INDEXTOOLARGE(NAME);                           \
+        n = n->next; i--; }                                \
+        BINARY(n->op,n->u.num);                            \
+        return; }                                          \
+    default:                                               \
+        BADAGGREGATE(NAME); }                              \
 }
 
 OF_AT(of_, "of", stk, stk->next)
@@ -642,28 +641,28 @@ PRIVATE void opcase_(void) {
             n->next != NULL ? n->u.lis->next : n->u.lis);
 }
 
-#define CONS_SWONS(PROCEDURE, NAME, AGGR, ELEM)              \
-PRIVATE void PROCEDURE(void)                                     \
-{   TWOPARAMS(NAME);                                         \
-    Node *temp;                                              \
-    switch (AGGR->op)                                        \
-      { case LIST_:                                          \
-        temp = newnode(ELEM->op, ELEM->u.num, AGGR->u.lis);  \
-        BINARY(LIST_,temp);                                  \
-        break;                                               \
-    case SET_:                                               \
-        CHECKSETMEMBER(ELEM,NAME);                           \
-        BINARY(SET_,AGGR->u.set | (1 << ELEM->u.num));       \
-        break;                                               \
-    case STRING_:                                            \
-      { char *s;                                             \
-        s = (char *) malloc(strlen(AGGR->u.str) + 2);        \
-        s[0] = ELEM->u.num;                                  \
-        strcpy(++s,AGGR->u.str);                             \
-        BINARY(STRING_,--s);                                 \
-        break; }                                             \
-    default:                                                 \
-        BADAGGREGATE(NAME); }                                \
+#define CONS_SWONS(PROCEDURE, NAME, AGGR, ELEM)            \
+PRIVATE void PROCEDURE(void)                               \
+{   TWOPARAMS(NAME);                                       \
+    Node *temp;                                            \
+    switch (AGGR->op)                                      \
+      { case LIST_:                                        \
+        temp = newnode(ELEM->op, ELEM->u.num, AGGR->u.lis);\
+        BINARY(LIST_,temp);                                \
+        break;                                             \
+    case SET_:                                             \
+        CHECKSETMEMBER(ELEM,NAME);                         \
+        BINARY(SET_,AGGR->u.set | (1 << ELEM->u.num));     \
+        break;                                             \
+    case STRING_:                                          \
+      { char *s;                                           \
+        s = (char *) malloc(strlen(AGGR->u.str) + 2);      \
+        s[0] = ELEM->u.num;                                \
+        strcpy(++s,AGGR->u.str);                           \
+        BINARY(STRING_,--s);                               \
+        break; }                                           \
+    default:                                               \
+        BADAGGREGATE(NAME); }                              \
 }
 
 CONS_SWONS(cons_, "cons", stk, stk->next)
@@ -714,8 +713,7 @@ PRIVATE void take_(void) {
                     if (n > 0) {
                         --n;
                         result = result | (1 << i);
-                    }
-                    else break;
+                    } else break;
                 }
             BINARY(SET_, result);
             return;
@@ -802,7 +800,7 @@ PRIVATE void concat_(void) {
                                     DMP1->u.num, NULL);
                     DMP3->next = temp;
                     DMP3 = DMP3->next;
-                };
+                }
                 DMP1 = DMP1->next;
             }
             DMP3->next = stk->u.lis;
@@ -813,7 +811,7 @@ PRIVATE void concat_(void) {
             return;
         default:
             BADAGGREGATE("concat");
-    };
+    }
 }
 
 PRIVATE void null_(void) {
@@ -876,7 +874,7 @@ PRIVATE void size_(void) {
             while (e != NULL) {
                 e = e->next;
                 siz++;
-            };
+            }
             break;
         }
         default :
@@ -936,7 +934,7 @@ TYPE(leaf_, "leaf", !=, LIST_)
 TYPE(user_, "user", ==, USR_)
 
 #define USETOP(PROCEDURE, NAME, TYPE, BODY)            \
-    PRIVATE void PROCEDURE(void)                    \
+    PRIVATE void PROCEDURE(void)                       \
     { ONEPARAM(NAME); TYPE(NAME); BODY; POP(stk); }
 
 USETOP(put_, "put", ONEPARAM, writefactor(stk);printf(" "))
@@ -1876,8 +1874,7 @@ PRIVATE void binrec_(void) {
     POP(dump);
 }
 
-PRIVATE void treestepaux(Node *item)
-{
+PRIVATE void treestepaux(Node *item) {
     if (item->op != LIST_) {
         NULLARY(item->op, item->u.num);
         exeterm(SAVED1->u.lis);
@@ -2543,8 +2540,7 @@ PRIVATE void make_manual(int latex) {
                 if (n[0] == ' ') {
                     n++;
                     printf("\\item[\\BX{");
-                }
-                else printf("\\item[\\JX{");
+                } else printf("\\item[\\JX{");
             }
             printf("%s", n);
             if (latex) printf("}]  \\verb#");
@@ -2558,8 +2554,7 @@ PRIVATE void make_manual(int latex) {
     }
 }
 
-PUBLIC char *opername(int o)
-{
+PUBLIC char *opername(int o) {
     return optable[(short) o].name;
 }
 /* END of INTERP.C */
