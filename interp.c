@@ -152,7 +152,7 @@ long l, Node
 *r);    /* file utils.c */
 PUBLIC void memoryindex_(void);
 
-PUBLIC void execerror(char *message, char *op);        /* file main.c */
+PUBLIC void execerror(char *message, char *op);  /* file main.c */
 PUBLIC void abortexecution_(void);
 
 PUBLIC void getsym(void);                        /* file scan.c */
@@ -201,7 +201,7 @@ PUSH(autoput_, INTEGER_, autoput)
 
 PUSH(clock_, INTEGER_, clock() - startclock)
 
-/* - - - - -   O P E R A T O R S   - - - - - */
+/* MARK: - O P E R A T O R S ----- */
 
 PRIVATE void id_(void) {
     /* do nothing */
@@ -278,7 +278,7 @@ PRIVATE void dup_(void) {
     NULLARY(stk->op, stk->u.num);
 }
 
-/* - - -   BOOLEAN   - - - */
+/* MARK: - BOOLEAN ----- */
 
 #define ANDORXOR(PROCEDURE, NAME, OPER1, OPER2)            \
 PRIVATE void PROCEDURE(void)                               \
@@ -333,20 +333,20 @@ MULDIVREM(divide_, "/", /, CHECKZERO("/"))
 /* - - -   NUMERIC   - - - */
 
 #define PREDSUCC(PROCEDURE, NAME, OPER)                \
-PRIVATE void PROCEDURE(void)                    \
-{   ONEPARAM(NAME);                        \
-    NUMERICTYPE(NAME);                        \
+PRIVATE void PROCEDURE(void)                           \
+{   ONEPARAM(NAME);                                    \
+    NUMERICTYPE(NAME);                                 \
     UNARY(stk->op,stk->u.num OPER 1); }
 
 PREDSUCC(pred_, "pred", -)
 
 PREDSUCC(succ_, "succ", +)
 
-#define PLUSMINUS(PROCEDURE, NAME, OPER)                \
-PRIVATE void PROCEDURE(void)                    \
-{   TWOPARAMS(NAME);                        \
-    INTEGER(NAME);                        \
-    NUMERIC2(NAME);                        \
+#define PLUSMINUS(PROCEDURE, NAME, OPER)               \
+PRIVATE void PROCEDURE(void)                           \
+{   TWOPARAMS(NAME);                                   \
+    INTEGER(NAME);                                     \
+    NUMERIC2(NAME);                                    \
     BINARY(stk->next->op,stk->next->u.num OPER stk->u.num); }
 
 PLUSMINUS(plus_, "+", +)
@@ -918,8 +918,8 @@ PRIVATE void small_(void) {
 }
 
 #define TYPE(PROCEDURE, NAME, REL, TYP)                \
-    PRIVATE void PROCEDURE(void)                    \
-    {   ONEPARAM(NAME);                        \
+    PRIVATE void PROCEDURE(void)                       \
+    {   ONEPARAM(NAME);                                \
     UNARY(BOOLEAN_,stk->op REL TYP); }
 
 TYPE(integer_, "integer", ==, INTEGER_)
@@ -977,7 +977,7 @@ HELP(help1_, !=)
 
 HELP(h_help1_, ==)
 
-/* - - - - -   C O M B I N A T O R S   - - - - - */
+/* MARK: - C O M B I N A T O R S ----- */
 
 #ifdef TRACING
 PRIVATE void writestack(Node *n)
@@ -1581,45 +1581,45 @@ PRIVATE void split_(void) {
     POP(dump);
 }
 
-#define SOMEALL(PROCEDURE, NAME, INITIAL)                \
-PRIVATE void PROCEDURE(void)                    \
-{   int result = INITIAL;                    \
-    TWOPARAMS(NAME);                        \
-    SAVESTACK;                            \
-    switch (SAVED2->op)                        \
-      { case SET_ :                        \
-      { int j;                        \
+#define SOMEALL(PROCEDURE, NAME, INITIAL)                     \
+PRIVATE void PROCEDURE(void)                                  \
+{   int result = INITIAL;                                     \
+    TWOPARAMS(NAME);                                          \
+    SAVESTACK;                                                \
+    switch (SAVED2->op)                                       \
+      { case SET_ :                                           \
+      { int j;                                                \
         for (j = 0; j < SETSIZE && result == INITIAL; j++)    \
-          { if (SAVED2->u.set & (1 << j))            \
-          { stk = newnode(INTEGER_,j,SAVED3);        \
-            exeterm(SAVED1->u.lis);            \
-            if (stk->u.num != INITIAL)            \
-            result = 1 - INITIAL; } }        \
-        break; }                        \
-    case STRING_ :                        \
-      { char *s;                        \
-        for (s = SAVED2->u.str;                \
-         *s != '\0' && result == INITIAL; s++)        \
-          { stk = newnode(CHAR_,*s,SAVED3);            \
-        exeterm(SAVED1->u.lis);                \
-        if (stk->u.num != INITIAL)            \
-            result = 1 - INITIAL; }            \
-        break; }                        \
-    case LIST_ :                        \
-      { dump1 = newnode(LIST_,SAVED2->u.lis,dump1);        \
-        while (DMP1 != NULL && result == INITIAL)        \
-          { stk = newnode(DMP1->op,                \
-            DMP1->u.num,SAVED3);            \
-        exeterm(SAVED1->u.lis);                \
-        if (stk->u.num != INITIAL)            \
-             result = 1 - INITIAL;            \
-        DMP1 = DMP1->next; }                \
-        POP(dump1);                        \
-        break; }                        \
-    default :                        \
-        BADAGGREGATE(NAME); }                \
-    stk = newnode(BOOLEAN_,result,SAVED3);            \
-    POP(dump);                            \
+          { if (SAVED2->u.set & (1 << j))                     \
+          { stk = newnode(INTEGER_,j,SAVED3);                 \
+            exeterm(SAVED1->u.lis);                           \
+            if (stk->u.num != INITIAL)                        \
+            result = 1 - INITIAL; } }                         \
+        break; }                                              \
+    case STRING_ :                                            \
+      { char *s;                                              \
+        for (s = SAVED2->u.str;                               \
+         *s != '\0' && result == INITIAL; s++)                \
+          { stk = newnode(CHAR_,*s,SAVED3);                   \
+        exeterm(SAVED1->u.lis);                               \
+        if (stk->u.num != INITIAL)                            \
+            result = 1 - INITIAL; }                           \
+        break; }                                              \
+    case LIST_ :                                              \
+      { dump1 = newnode(LIST_,SAVED2->u.lis,dump1);           \
+        while (DMP1 != NULL && result == INITIAL)             \
+          { stk = newnode(DMP1->op,                           \
+            DMP1->u.num,SAVED3);                              \
+        exeterm(SAVED1->u.lis);                               \
+        if (stk->u.num != INITIAL)                            \
+             result = 1 - INITIAL;                            \
+        DMP1 = DMP1->next; }                                  \
+        POP(dump1);                                           \
+        break; }                                              \
+    default :                                                 \
+        BADAGGREGATE(NAME); }                                 \
+    stk = newnode(BOOLEAN_,result,SAVED3);                    \
+    POP(dump);                                                \
 }
 
 SOMEALL(some_, "some", 0)
