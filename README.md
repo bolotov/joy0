@@ -2,7 +2,7 @@ Joy0
 ----
 
 This is a bit modified fork of a **Joy0** by **Manfred von Thun**
-that [**Ruurd Wiersma**] had.
+that [**Ruurd Wiersma**](https://wodan58.github.io) had.
 I am going to change it in a way to allow compiling it with no problems
 using latest compilers and maybe minor ergonomic changes.
 No changes beyound just making it work, pretty-printing and bugfixes if
